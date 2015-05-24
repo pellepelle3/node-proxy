@@ -47,7 +47,6 @@ function getServices(){
 function updateList(){
 	var watcher = consul.watch(consul.kv.get, { key: process.env.SERVICE_NAME })
 	watcher.on('change', function(result) {
-		console.log("config",result)
 		 try {
 			if (!result)
 			throw new Error('configuration not present')
@@ -102,23 +101,30 @@ function theProxy(){
 			host = host.toLowerCase()
 			var theUrlis = Url.parse('http://' + host + req.url)
 			host = theUrlis.hostname.replace(/\./g,"*")
-			if (process.env.DEBUG == "true")
-				console.log(theUrlis)
+			
 			
 			var hostForList = (list 
 				&& _.isObject(list.router) 
 				&& _.has(list.router,host)) 
 				? list.router[host] 
 				: theUrlis.hostname.replace(baseUrl,"")
+			if (process.env.DEBUG == "true")
+				console.log("hostForList",hostForList)
+
 			if( hostForList == baseUrl.substring(1)
 				|| hostForList == myHost.hostname 
 				|| hostForList == process.env.SERVICE_NAME
 				|| hostForList == "") return checkRoutes(req,res)
 			
+			if (process.env.DEBUG == "true")
+				console.log("host not the proxy")
+			
 			if(list && _.isArray(list.publish) && _.indexOf(list.publish,hostForList) == -1) return sendWeb(res,list.page404 || "404",404)
 
+			
 			lsq.services.get(hostForList)
 			.then(function(service){
+				console.log("the service",service)
 				if(!_.isObject(service)) return sendWeb(res,list.page404 || "404",404)
 				proxyWeb(req,res,service,0)
 			})
