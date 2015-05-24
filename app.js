@@ -118,7 +118,7 @@ function theProxy(){
 			
 			if (process.env.DEBUG == "true")
 				console.log("host not the proxy")
-			
+
 			if(list && _.isArray(list.publish) && _.indexOf(list.publish,hostForList) == -1) return sendWeb(res,list.page404 || "404",404)
 
 			
@@ -126,7 +126,7 @@ function theProxy(){
 			.then(function(service){
 				console.log("the service",service)
 				if(!_.isObject(service)) return sendWeb(res,list.page404 || "404",404)
-				proxyWeb(req,res,service,0)
+				proxyWeb(req,res,{ target: 'http://'+service })
 			})
 		})
 		serverHttp.on('upgrade', function (req, socket, head) {
