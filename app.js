@@ -22,7 +22,11 @@ updateList()
 startProxy()
 
 function getServices(){
+	if (process.env.DEBUG == "true")
+		console.log("getserv",process.env.PORT)
 	return new Promise(function (resolve,reject) {
+		if (process.env.DEBUG == "true")
+			console.log("get serv")
 		lsq.services.get(process.env.SERVICE_NAME)
 		.then(function(service){
 			if(_.isObject(service))
@@ -44,6 +48,7 @@ function getServices(){
 function updateList(){
 	var watcher = consul.watch(consul.kv.get, { key: process.env.SERVICE_NAME })
 	watcher.on('change', function(result) {
+		console.log("config",result)
 		 try {
 			if (!result)
 			throw new Error('configuration not present')
