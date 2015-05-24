@@ -13,6 +13,8 @@ var   path		= require('path')
 	, myHost 	= {}
 	, serverHttp
 
+console.log("debug str",process.env.DEBUG == "true")
+console.log("debug bool",process.env.DEBUG == true)
 if(process.env.MYHOST)
 	myHost.hostname = process.env.MYHOST
 
