@@ -27,9 +27,13 @@ function getServices(){
 				myHost = service
 			else
 				console.log("service not a object",service) 
+			if (process.env.DEBUG == "true")
+				console.log("get service",myHost)
 		})
 		.then(lsq.services.list)
   		.then(function(services){
+  			if (process.env.DEBUG == "true")
+				console.log("get services",services)
   			resolve()
   		})
 	})
@@ -84,15 +88,17 @@ function theProxy(){
 	var options = {
 			enable : { xforward: true }
 		 }
-
+		if (process.env.DEBUG == "true")
+			console.log("start proxy")
+		
 		serverHttp = http.createServer(function(req,res){
 			var host = req.headers.host || ""
 			host = host.toLowerCase()
 			var theUrlis = Url.parse('http://' + host + req.url)
 			host = theUrlis.hostname.replace(/\./g,"*")
-			if (process.env.DEBUG == "true"){
+			if (process.env.DEBUG == "true")
 				console.log(theUrlis)
-			}
+			
 			var hostForList = (list 
 				&& _.isObject(list.router) 
 				&& _.has(list.router,host)) 
