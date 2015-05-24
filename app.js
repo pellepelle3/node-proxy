@@ -26,7 +26,7 @@ function getServices(){
 		console.log("getserv",process.env.PORT)
 	return new Promise(function (resolve,reject) {
 		if (process.env.DEBUG == "true")
-			console.log("get serv")
+			console.log("get serv",process.env.SERVICE_NAME)
 		lsq.services.get(process.env.SERVICE_NAME)
 		.then(function(service){
 			if(_.isObject(service))
@@ -35,13 +35,13 @@ function getServices(){
 				console.log("service not a object",service) 
 			if (process.env.DEBUG == "true")
 				console.log("get service",myHost)
-		})
+		},reject)
 		.then(lsq.services.list)
   		.then(function(services){
   			if (process.env.DEBUG == "true")
 				console.log("get services",services)
   			resolve()
-  		})
+  		},reject)
 	})
 }
 
