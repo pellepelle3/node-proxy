@@ -6,6 +6,7 @@ var   path		= require('path')
 	, lsq		= require('lsq')
 	, tooBusy 	= require('toobusy-js')
 	, Url 		= require('url')
+	, _ 		= require('underscore')
 	, proxy 	= httpProxy.createProxyServer({ws: true,xfwd:true})
 	, baseUrl 	= process.env.BASEURL || ""
 	, list 		= {}
@@ -13,8 +14,6 @@ var   path		= require('path')
 	, myHost 	= {}
 	, serverHttp
 
-console.log("debug str",process.env.DEBUG == "true")
-console.log("debug bool",process.env.DEBUG == true)
 if(process.env.MYHOST)
 	myHost.hostname = process.env.MYHOST
 
